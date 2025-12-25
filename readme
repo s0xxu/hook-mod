@@ -1,8 +1,8 @@
 Learning the linux kernel:
 This is a kernel module I wrote for intercepting the openat syscall function, using kprobe to resolve syscall addresses in memory via kallsyms_lookup_name.
-After we have resolved the address, ftrace will then intercept the address and redirect it to our ftrace_handler function by adding a 5 byte call instruction prior at the beginning of the syscall function.
+After we have resolved the address, ftrace will then intercept the address and redirect it to our ftrace_handler function by patching a 5 byte call instruction prior at the beginning of the syscall function.
 In our ftrace handler, we will build our own function, and extract CPU registers via the ftrace API, which will be be used in our function to print the userspace values.
-We then mimic the __x64_sys_open calling convention, and pass the registers via return to the kernel and let it handle the hard work for us, in the RDI register there will be a pointer to a older saved instance containing userspace arguments.
+We then use the __x64_sys_open calling convention, and pass the registers via return to the kernel and let it handle the hard work for us, in the RDI register there will be a pointer to a saved instance containing userspace arguments.
 Here are some results I got after a long time fighting with this, these results were captured while the device was running as it normally would, except with our syscall intercept being in the background.
 Building this gave me an introduction into ftrace, and using kprobe to resolve addresses in the kernel, and ftrace for intercepting functions in the kernel.
 I'd also like to think that this made me stronger in debugging, in the domain of the kernel, after a large amount of kernel panics.
