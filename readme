@@ -8,7 +8,7 @@ Below are some of the results I got after a long time of working on this, these 
 Building this gave me an introduction into ftrace, and using kprobe to resolve addresses in the kernel, and ftrace for intercepting functions in the kernel.
 I'd also like to think that this made me stronger in debugging, and gave me a bit more understanding in the domain of the kernel, after a large amount of kernel panics.
 
-
+It's very unstable if you decide to run it, you cannot unload the module without crashing the kernel for example. 
 
 [  +0.000994] parent_ip: ffffffffa7005ee8
 [  +0.000284] parent_ip: ffffffffa7005ee8
