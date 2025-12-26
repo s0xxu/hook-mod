@@ -2,9 +2,9 @@ Learning the linux kernel:
 This is a kernel module I wrote for intercepting the openat syscall function, using kprobe to resolve syscall addresses in memory via kallsyms_lookup_name.
 After we have resolved the address, ftrace will then intercept the address and redirect it to our ftrace_handler function by patching a 5 byte call instruction prior at the beginning of the syscall function.
 In our ftrace handler, we will build our own function, and extract CPU registers via the ftrace API, which will be be used in our function to print the userspace values.
-__x64_sys_openat is expecting a pointer to pt_regs in RDI, this is subtle and I found it tough, from the moment we enter our ftrace handler function, rdi is expected to be a pointer to user arguments, but upon enter of __x64_sys_openat rdi is expected to be a pointer to pt_regs, this caused alot of crashes and I spent alot of time figuring this out.
+__x64_sys_openat is expecting a pointer to pt_regs in RDI, this is subtle and I found it tough, from the moment we enter our ftrace handler function, rdi is expected to be a pointer to user arguments, but upon entering __x64_sys_openat rdi is expected to be a pointer to pt_regs, this caused alot of crashes and I spent alot of time figuring this out.
 
-Below are some of the results I got after a long time fighting with this, these results were captured while the device was running as it normally would, except with our syscall intercept being in the background.
+Below are some of the results I got after a long time of working on this, these results were captured while the device was running as it normally would, except with our syscall intercept being in the background.
 Building this gave me an introduction into ftrace, and using kprobe to resolve addresses in the kernel, and ftrace for intercepting functions in the kernel.
 I'd also like to think that this made me stronger in debugging, and gave me a bit more understanding in the domain of the kernel, after a large amount of kernel panics.
 
